@@ -1,21 +1,31 @@
 import React, { Component } from "react";
-import { getCurrentWeather, getFiveDayForecast } from "../utils/api";
+import { Redirect } from "react-router-dom";
+// import { getCurrentWeather, getFiveDayForecast } from "../utils/api";
 
 export default class Search extends Component {
   state = {
-    searchQuery: ""
+    searchQuery: "",
+    goToForecast: false
   };
   handleInputChange = e => {
     const searchQuery = e.target.value;
     this.setState(() => ({ searchQuery }));
   };
-  handleSearch(cityName) {
-    getCurrentWeather(cityName)
-      .then(result => console.log(result))
-      .catch(e => console.warn(e));
-  }
+  handleButtonClick = () =>
+    this.setState(() => ({
+      goToForecast: true
+    }));
+  // handleSearch(cityName) {
+  //   getCurrentWeather(cityName)
+  //     .then(result => console.log(result))
+  //     .catch(e => console.warn(e));
+  // }
   render() {
-    const { searchQuery } = this.state;
+    const { searchQuery, goToForecast } = this.state;
+
+    if (goToForecast) {
+      return <Redirect to={`/forecast/${window.encodeURI(searchQuery)}`} />;
+    }
     return (
       <div
         className="search-container"
@@ -31,7 +41,7 @@ export default class Search extends Component {
         <button
           className="btn btn-success"
           style={{ margin: 10 }}
-          onClick={() => this.handleSearch(searchQuery)}
+          onClick={this.handleButtonClick}
         >
           Get Weather
         </button>
