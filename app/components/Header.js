@@ -3,9 +3,9 @@ import Search from "./Search";
 
 export default function Header(props) {
   return (
-    <div className="header">
-      <h1>HEADER</h1>
-      <Search />
+    <div className="navbar">
+      <h1 className="header">WEATHER APP</h1>
+      <Search direction="row" />
     </div>
   );
 }
