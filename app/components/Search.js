@@ -1,25 +1,28 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-// import { getCurrentWeather, getFiveDayForecast } from "../utils/api";
+import PropTypes from "prop-types";
 
 export default class Search extends Component {
+  static defaultProps = {
+    direction: "column"
+  };
+  static propTypes = {
+    direction: PropTypes.string.isRequired
+  };
   state = {
-    searchQuery: "",
-    goToForecast: false
+    searchQuery: ""
   };
   handleInputChange = e => {
     const searchQuery = e.target.value;
     this.setState(() => ({ searchQuery }));
   };
-  handleButtonClick = () =>
-    this.setState(() => ({
-      goToForecast: true
-    }));
-  // handleSearch(cityName) {
-  //   getCurrentWeather(cityName)
-  //     .then(result => console.log(result))
-  //     .catch(e => console.warn(e));
-  // }
+  handleButtonClick = city => {
+    const { history } = this.props;
+    history.push({
+      pathname: "forecast",
+      search: `?city=${city}`
+    });
+  };
   render() {
     const { searchQuery, goToForecast } = this.state;
 
@@ -41,7 +44,7 @@ export default class Search extends Component {
         <button
           className="btn btn-success"
           style={{ margin: 10 }}
-          onClick={this.handleButtonClick}
+          onClick={() => this.handleButtonClick(searchQuery)}
         >
           Get Weather
         </button>

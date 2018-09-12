@@ -9,7 +9,7 @@ export default class Home extends Component {
         style={{ backgroundImage: "url('app/images/pattern.svg')" }}
       >
         <h1>Enter a City and State</h1>
-        <Search direction="column" />
+        <Search direction="column" {...this.props} />
       </div>
     );
   }

@@ -5,7 +5,7 @@ export default function Header(props) {
   return (
     <div className="navbar">
       <h1 className="header">WEATHER APP</h1>
-      <Search direction="row" />
+      <Search direction="row" {...props} />
     </div>
   );
 }

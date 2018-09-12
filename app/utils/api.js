@@ -1,30 +1,49 @@
 const API_KEY = "7905791d4fbf2dba295bc3ae9368f866";
+const baseURL = "http://api.openweathermap.org/data/2.5/";
 
-// http://api.openweathermap.org/data/2.5/weather?q=CITY-NAME&type=accurate&APPID=7905791d4fbf2dba295bc3ae9368f866
-// http://api.openweathermap.org/data/2.5/forecast/daily?q=CITY-NAME&type=accurate&APPID=YOUR-API-KEY&cnt=5
-
-export function getCurrentWeather(cityName) {
-  return fetch(
-    `http://api.openweathermap.org/data/2.5/weather?q=${window.encodeURI(
-      cityName
-    )}&type=accurate&APPID=${API_KEY}`
-  )
-    .then(res => res.json())
-    .catch(e => {
-      console.warn(e);
-      return null;
-    });
+function handdleError(e) {
+  console.warn(e);
+  return null;
 }
 
-export function getFiveDayForecast(cityName) {
-  return fetch(
-    `http://api.openweathermap.org/data/2.5/forecast?q=${window.encodeURI(
-      cityName
-    )}&type=accurate&APPID=${API_KEY}&cnt=5`
-  )
+function getURL(resource, data) {
+  const searchParams = Object.keys(data)
+    .map(key => `${key}=${encodeURIComponent(data[key])}`)
+    .join("&");
+  return `${baseURL}${resource}?${searchParams}`;
+}
+
+function getQueryStringData(city) {
+  return {
+    q: city,
+    type: "accurate",
+    APPID: API_KEY
+  };
+}
+
+export function getCurrentWeather(city) {
+  const queryStringData = getQueryStringData(city);
+  const url = getURL("weather", queryStringData);
+
+  return fetch(url)
     .then(res => res.json())
-    .catch(e => {
-      console.warn(e);
-      return null;
-    });
+    .catch(handdleError);
+}
+
+function grabDayForecasts(data) {
+  let dayForecasts = data.list.filter(w => /15:00:00/.test(w.dt_txt));
+  if (dayForecasts.length < 5) {
+    dayForecasts.push(data.list[0]);
+  }
+  return dayForecasts;
+}
+
+export function getForecastData(city) {
+  const queryStringData = getQueryStringData(city);
+  const url = getURL("forecast", queryStringData);
+
+  return fetch(url)
+    .then(res => res.json())
+    .then(grabDayForecasts)
+    .catch(handdleError);
 }
