@@ -2,7 +2,6 @@ import React from "react";
 import moment from "moment";
 
 export default function DayWeather({ dt_txt, weather, onClick }) {
-  console.log(weather);
   const date = moment(dt_txt).format("dddd, MMM DD");
   const icon = weather[0].icon;
   return (

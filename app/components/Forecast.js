@@ -12,7 +12,6 @@ export default class Forecast extends Component {
     this.setState(() => ({ loading: true }));
 
     getForecastData(city).then(forecastData => {
-      console.log(forecastData);
       this.setState(() => ({
         loading: false,
         forecastData
@@ -31,7 +30,6 @@ export default class Forecast extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const city = parse(nextProps.location.search).city;
-    console.log(nextProps);
     if (this.city !== city) {
       this.city = city;
       this.searchWeather(this.city);
