@@ -17,7 +17,8 @@ function getQueryStringData(city) {
   return {
     q: city,
     type: "accurate",
-    APPID: API_KEY
+    APPID: API_KEY,
+    units: "imperial"
   };
 }
 

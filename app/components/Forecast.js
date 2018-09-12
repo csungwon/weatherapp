@@ -1,22 +1,7 @@
 import React, { Component } from "react";
 import { getForecastData, getFiveDayForecast } from "../utils/api";
 import { parse } from "query-string";
-import moment from "moment";
-
-function DayWeather({ dt_txt, weather }) {
-  const date = moment(dt_txt).format("dddd, MMM DD");
-  const icon = weather[0].icon;
-  return (
-    <div className="dayContainer">
-      <img
-        src={`./app/images/weather-icons/${icon}.svg`}
-        alt={`${dt_txt} weather`}
-        className="weather"
-      />
-      <h2 className="subheader">{date}</h2>
-    </div>
-  );
-}
+import DayWeather from "./DayWeather";
 
 export default class Forecast extends Component {
   state = {
@@ -32,6 +17,12 @@ export default class Forecast extends Component {
         loading: false,
         forecastData
       }));
+    });
+  }
+  handleDayClick(weather) {
+    this.props.history.push({
+      pathname: `/detail/${this.city}`,
+      state: weather
     });
   }
   componentDidMount() {
@@ -58,6 +49,7 @@ export default class Forecast extends Component {
               key={weather.dt}
               dt_txt={weather.dt_txt}
               weather={weather.weather}
+              onClick={() => this.handleDayClick(weather)}
             />
           ))}
         </div>

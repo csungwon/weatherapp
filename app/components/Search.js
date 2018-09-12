@@ -19,7 +19,7 @@ export default class Search extends Component {
   handleButtonClick = city => {
     const { history } = this.props;
     history.push({
-      pathname: "forecast",
+      pathname: "/forecast",
       search: `?city=${city}`
     });
   };
